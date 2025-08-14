@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
 }
 
 :root{
@@ -12,6 +13,8 @@
     --gray-green: #648991;
     --light-gray-green: #9DB6BC;
     --background: #3C6B6B;
+    --white: #fff;
+    
 }
 
 body{
@@ -22,17 +25,40 @@ body{
 header{
     background: var(--background);
     margin-bottom: 2.5rem;
-}
-
-
-
-main{
-    background-image: url(./assets/Captura\ de\ tela\ 2025-08-12\ 114112.png);
-    background-repeat: no-repeat;
-    background-size: 100%;
-    height: 100vh;
+    font-family: "Quicksand", sans-serif;
+    text-transform: uppercase;
     
 }
 
+header img {
+    border-radius: 10rem;
+}
+
+main{
+    background-image: url(./assets/background.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+main h1{
+    font-size: 6rem;
+    color: var(--white);
+    font-family: "Dm Serif Display", sans-serif;
+
+}
+main p{
+    font-family: "Poppins", sans-serif;
+    text-transform: uppercase;
+    font-weight: 600;
+    background: var(--white);
+    letter-spacing: 50%;
+}
 
 

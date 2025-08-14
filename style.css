@@ -11,4 +11,28 @@
     --water-green: #60A1A0;
     --gray-green: #648991;
     --light-gray-green: #9DB6BC;
+    --background: #3C6B6B;
 }
+
+body{
+    min-height: 100vh;
+    background-color: var(--background);
+}
+
+header{
+    background: var(--background);
+    margin-bottom: 2.5rem;
+}
+
+
+
+main{
+    background-image: url(./assets/Captura\ de\ tela\ 2025-08-12\ 114112.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 100vh;
+    
+}
+
+
+

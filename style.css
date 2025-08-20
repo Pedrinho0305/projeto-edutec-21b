@@ -14,6 +14,8 @@
     --light-gray-green: #9DB6BC;
     --background: #3C6B6B;
     --white: #fff;
+
+    
     
 }
 
@@ -22,18 +24,41 @@ body{
     background-color: var(--background);
 }
 
+
+
 header{
     background: var(--background);
-    margin-bottom: 2.5rem;
-    font-family: "Quicksand", sans-serif;
-    text-transform: uppercase;
+    padding-block: 1.5rem;
     
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+    align-items: center;
+}
+
+header div{
+    margin-right: 3rem;
+}
+
+header div a{
+    font-size: 30px;
+    letter-spacing: 0.3rem;
 }
 
 header img {
     border-radius: 10rem;
 }
 
+header a{
+    font-weight: 700;
+    font-size: 18px;
+    font-family: "Quicksand", sans-serif;
+    text-transform: uppercase;
+    margin-left: 3rem;
+    text-decoration: none;
+    color: var(--white);
+
+}
 main{
     background-image: url(./assets/background.png);
     background-repeat: no-repeat;
@@ -58,7 +83,16 @@ main p{
     text-transform: uppercase;
     font-weight: 600;
     background: var(--white);
-    letter-spacing: 50%;
+    letter-spacing: 0.3rem;
+}
+
+main button{
+    color: var(--white);
+    background: var(--dark-green);
+    margin-top: 2rem;
+    width: 10rem;
+    font-family: "Radio Canada Big", sans-serif;
+    text-transform: uppercase;
 }
 
 

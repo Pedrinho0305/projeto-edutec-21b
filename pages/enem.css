@@ -73,9 +73,6 @@ header nav  a{
 
 }
 
-
-
-
 main{
     background-image: url(../assets/enembackground.png);
     background-repeat: no-repeat;
@@ -88,15 +85,51 @@ main{
      
 }
 
+.home {
+    position: absolute;
+    left: 4.9375rem;
+    top: 25rem;
+}
+
 .home h1 {
-    font-size: 4rem;
+    font-size: 5rem;
     color: var(--white);
     
 }
 
 .home p {
-    font-size: 1rem;
-    width: 30.25rem;
+    padding-top: 1.5rem;
+    font-size: 1.2rem;
+    width: 40rem;
     color: var(--white);
     font-family: 'Poppins', sans-serif;
+    padding-bottom: 1rem;
+}
+
+.container {
+    content: "";
+    display: block;
+    width: 5rem;
+    height: 0.9rem;
+    background-color: var(--white);
+    margin-top: 0.5rem;
+}
+
+.home button {
+    background-color: var(--water-green);
+    color: white;
+    border: none;
+    padding: 0.9375rem 3.125rem;
+    font-size: 1.125rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    letter-spacing: 0.10rem;
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s ease;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background-color: rgba(75, 145, 145, 0.726);
 }

@@ -117,10 +117,33 @@ text-transform: uppercase;
 }
 
 .clima{
-    display: flex;
-    flex-direction: column;
-    background-color: var(--background);
+    position: absolute;
+    width: 554px;
+    height: 243px;  
+    left: 769px;
+    top: 225px;
+}
 
+.clima h1{
+    text-align: justify;
+    margin-bottom: 3rem;
+    margin-top: 0rem;
+    font-size: 4.0rem;
+}
+
+.clima p{
+margin-left: 5rem;
+}
+
+.clima button {
+    display: flex;
+    width: 12.9rem;
+    height: 50px;
+    padding: 1rem 2.3rem 1.01rem 2.25rem;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    text-transform: uppercase;
 }
 
 section h1 {
@@ -142,4 +165,12 @@ section{
     opacity: 60%;
 }
 
+.desmatamento{
+    background-color: var(--white-green);
+    opacity: 60%;
+}
 
+.poluicaoHidr{
+    background-color: var(--white-green);
+    opacity: 60%;
+}

@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
 }
 
 :root{
@@ -14,16 +13,11 @@
     --light-gray-green: #9DB6BC;
     --background: #3C6B6B;
     --white: #fff;
-    --black: #000;    
+    --black: #000;
+
+    
     
 }
-
-body{
-    min-height: 100vh;
-    background-color: var(--background);
-}
-
-
 
 header{
     background: var(--background);

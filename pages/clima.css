@@ -97,7 +97,15 @@ main button {
     font-family: 'Poppins', sans-serif;
     width: 7rem;
     height: 2rem;
+    border-radius: 0.3rem;
     border: none;
+    margin-left: 5rem;
+    margin-top: 2rem;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgba(75, 145, 145, 0.726);
 }
 
 main p{
@@ -161,16 +169,104 @@ section{
 }
 
 .aquecimentoGlobal{
+    display: flex;
+    width: 26.2rem;
+    height: fit-content;
+    padding: 5rem 5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
     background-color: var(--white-green);
     opacity: 60%;
 }
 
 .desmatamento{
+    display: flex;
+    width: 26.2rem;
+    height: fit-content;
+    padding: 5rem 5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
     background-color: var(--white-green);
     opacity: 60%;
+    margin-inline: auto;
 }
 
 .poluicaoHidr{
+    display: flex;
+    width: 26.2rem;
+    height: fit-content;
+    padding: 5rem 5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
     background-color: var(--white-green);
     opacity: 60%;
+    margin-inline: auto;
+}
+
+.poluicaoAt {
+    display: flex;
+    width: 26.2rem;
+    height: fit-content;
+    padding: 5rem 5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    background-color: var(--white-green);
+    opacity: 60%;
+    margin-inline: auto;
+}
+
+.queimadas {
+    display: flex;
+    width: 26.2rem;
+    height: fit-content;
+    padding: 5rem 5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    background-color: var(--white-green);
+    opacity: 60%;
+    margin-inline: auto;
+}
+
+.perdaBio {
+    display: flex;
+    width: 26.2rem;
+    height: fit-content;
+    padding: 5rem 5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    background-color: var(--white-green);
+    opacity: 60%;
+    margin-inline: auto;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    
+}
+
+.cards h1 {
+    font-family: 'Lora', sans-serif;
+}
+
+.cards p {
+    font-family: Lora;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: none;
+    width: 20rem;
+}
+
+.cards button {
+    background-color: var(--dark-green);
 }

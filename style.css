@@ -499,6 +499,13 @@
         aspect-ratio: 17/26;
     }
 
+    .botao .voltar-ao-topo:hover{
+        opacity: 85%;
+        background: var(--dark-green);
+        color: var(--dark-green);
+        transition: 0.3s;
+    }
+
    
 
     

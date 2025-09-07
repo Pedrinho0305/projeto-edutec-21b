@@ -29,6 +29,10 @@ header{
     align-items: center;
 }
 
+.active{
+    color:aqua;
+}
+
 header nav{
     margin-inline: auto;
     

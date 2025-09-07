@@ -155,6 +155,9 @@ button:hover {
     font-style: normal;
     font-weight: 500;
     line-height: 140%;
+    
+
+   
 }
 
 
@@ -202,5 +205,56 @@ button:hover {
     border: none;
     transition: 0.3s ease;
     margin-top: 2.56rem;
+    
+    
+}
+
+.enem{
+    display: flex;
+    gap: 12.09rem;
+    justify-content: center;
+    
+    h1{
+        width: 25.41406rem;
+        color: #2F4F4F;
+
+        font-family: "DM Serif Display";
+        font-size: 4rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 120%; 
+        margin-left: 5.38rem;
+        margin-top: 15.06rem;
+    }
+    
+}
+
+.between2{
+    h2{
+        color: #2F4F4F;
+
+        font-family: Quicksand;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 140%; /* 1.75rem */
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        text-align: center;
+        margin-top: 15.06rem;
+        
+    }
+    
+    ul{
+        color: #4C4C4C;
+
+        font-family: Quicksand;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 140%;
+        margin-bottom: 24rem;
+    }
+
     
 }

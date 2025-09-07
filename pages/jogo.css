@@ -72,3 +72,97 @@ header nav  a{
     color: var(--white);
 
 }
+
+body{
+    min-height: 100vh;
+    min-width: fit-content;
+}
+
+main{
+    height: 100vh;
+    background-image: url(../assets/jogo-img.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+main h1{
+    width: 52.8125rem;
+    
+    flex-shrink: 0;
+
+    color: #FFF;
+
+    font-family: "DM Serif Display";
+    font-size: 5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; 
+    text-align: center;
+    
+}
+
+main p{
+    width: 38.75rem;
+    color: #F7F5EF;
+
+    text-align: center;
+    font-family: Quicksand;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 1.05rem */
+    letter-spacing: 0.2625rem;
+    text-transform: uppercase;
+}
+
+main button{
+    border-radius: 0.25rem;
+    background: rgba(96, 161, 160, 0.85);
+
+    display: flex;
+    width: 12.9375rem;
+    height: 3.125rem;
+    padding: 0.98856rem 2.25rem 1.01144rem 2.25rem;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: none;
+
+}
+
+main button a{
+    width: 8.4375rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+
+    color: #FFF;
+
+    text-align: center;
+    font-family: Poppins;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 1.2rem */
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    
+   
+}
+
+main button:hover{
+    opacity: 85%;
+    background: var(--background);
+    
+    transition: 0.3s;
+}
+
+

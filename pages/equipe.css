@@ -123,11 +123,11 @@ section:hover{
         margin-inline: auto;
     }
      h1{
-        color: var(--black);
+        color: var(--white);
     }
 
     p{
-        color: var(--black);
+        color: var(--white);
     }
 }
 

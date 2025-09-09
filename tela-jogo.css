@@ -97,6 +97,7 @@ main{
         border: .1875rem solid var(--water-green);
         border-radius: 0.75rem;
         box-shadow: 0px 0px 20px rgba(0,0,0,0.6);
+        
     }
 
     button{

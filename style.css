@@ -51,6 +51,7 @@
     .logo{
         display: flex;
         margin-left: 4rem;
+        gap: 1rem;
     }
 
 

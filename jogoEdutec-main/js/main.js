@@ -7,6 +7,14 @@ const gameBoard = document.querySelector('.game-board');
 const startButton = document.querySelector('.botao-iniciar');
 const restartButton = document.querySelector('.botao-reiniciar');
 
+const RANKING_URL = "http://localhost:5500/ranking";
+let userEmail = localStorage.getItem('currentUserEmail');
+
+if (!userEmail) {
+    alert("Você precisa estar logado para jogar. Redirecionando...");
+    window.location.href = 'login.html';
+}
+
 
 const imagens = [
     "images/planta1-removebg-preview.png",
@@ -32,6 +40,20 @@ const jump = () => {
     setTimeout(() => {
         jogador.classList.remove('jump')
     }, 500)
+}
+
+async function sendScoreToRanking(score) {
+    if (!userEmail) return; 
+
+    try {
+        const response = await fetch(RANKING_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: userEmail, score: score })
+        });
+    } catch (error) {
+        console.error("Erro ao enviar pontuação:", error);
+    }
 }
 
 function startGame() {

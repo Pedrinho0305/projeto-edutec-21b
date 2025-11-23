@@ -1,68 +1,43 @@
-// O nome do ID deve ser o mesmo do seu botão no HTML!
-const button = document.getElementById('login'); 
+// login.js (USANDO sessionStorage - CORRIGIDO)
 
-if (button) {
-    // 1. Usa addEventListener para anexar a função sendUser ao evento de clique.
-    // O objeto de evento (e) é passado automaticamente.
-    button.addEventListener('click', sendUser);
-} else {
-    console.error("Erro: O botão de login com ID 'login' não foi encontrado no HTML.");
+const formLogin = document.getElementById('form-login');
+
+if (formLogin) {
+    formLogin.addEventListener('submit', handleLogin);
 }
 
-
-/**
- * Envia os dados do formulário para o backend via requisição POST.
- * @param {Event} e - O objeto de evento do clique.
- */
-function sendUser(e) {
-    // Se o botão estiver dentro de um formulário e for type="submit",
-    // esta linha impede a recarga da página.
+function handleLogin(e) {
     e.preventDefault(); 
     
-    // Pega os dados digitados
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-    const lembrar = document.getElementById("lembrar-me").checked;
-
-    // Validação simples
+    const email = document.getElementById("email").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    
     if (!email || !senha) {
         alert("Preencha todos os campos.");
         return;
     }
 
-    // Monta o objeto que será enviado
-    const dados = {
-        email: email,
-        senha: senha,
-        lembrar: lembrar
-    };
+    // 1. Busca a lista de usuários armazenada
+    const storedUsersJSON = sessionStorage.getItem('appUsers');
+    const users = storedUsersJSON ? JSON.parse(storedUsersJSON) : [];
+    
+    // 2. Tenta encontrar o usuário
+    const foundUser = users.find(user => 
+        user.email === email && user.senha === senha
+    );
 
-    // 🚀 Envio dos dados para o backend
-    fetch("http://localhost:5500/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados) 
-    })
-    .then(async (res) => {
-        let resposta;
-        try {
-            resposta = await res.json();
-        } catch (error) {
-            resposta = { message: `Erro no servidor (Status ${res.status}).` };
-        }
-
-        if (res.ok) { // Status 200-299
-            alert("Login realizado com sucesso!");
-            console.log("Resposta do servidor:", resposta);
-            window.location.href = '../index.html'
-        } else { // Status 4xx ou 5xx
-            alert(`Erro ao fazer login (${res.status}): ${resposta.message}`);
-        }
-    })
-    .catch((erro) => {
-        console.error("Erro na requisição Fetch (Rede/CORS):", erro);
-        alert("Falha ao conectar com o servidor.");
-    });
+    if (foundUser) {
+     // 3. 🚨 FEEDBACK DE SUCESSO
+        alert(`✅ Login local realizado com sucesso! Bem-vindo(a), ${email}.`);
+        
+        // 4. Guarda o e-mail logado no localStorage para o JOGO e o Ranking
+        localStorage.setItem('currentUserEmail', email);
+        
+        // 5. Redireciona para o jogo
+        window.location.href = '../index.html'; 
+        
+    } else {
+        // 6. 🚨 FEEDBACK DE FALHA
+        alert("❌ Falha no Login: E-mail ou senha incorretos ou não cadastrados.");
+    }
 }

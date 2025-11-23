@@ -1,15 +1,12 @@
-// cadastro.js
+// cadastro.js (USANDO sessionStorage)
 
-const CADASTRO_URL = "http://localhost:5500/cadastro";
 const formCadastro = document.getElementById('form-cadastro');
 
 if (formCadastro) {
-    // Escuta o evento de 'submit' do formulário
     formCadastro.addEventListener('submit', handleCadastro);
 }
 
-
-async function handleCadastro(e) {
+function handleCadastro(e) {
     e.preventDefault(); 
     
     const email = document.getElementById("email").value.trim();
@@ -20,26 +17,24 @@ async function handleCadastro(e) {
         return;
     }
 
-    const dados = { email, senha };
+    // 1. Verifica se o usuário JÁ existe no sessionStorage
+    const storedUsersJSON = sessionStorage.getItem('appUsers');
+    const users = storedUsersJSON ? JSON.parse(storedUsersJSON) : [];
 
-    try {
-        const res = await fetch(CADASTRO_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dados) 
-        });
-
-        const resposta = await res.json();
-
-        if (res.status === 201) {
-            alert("✅ Cadastro realizado com sucesso! Você será redirecionado para a página de login.");
-            // Redireciona para o login após sucesso no cadastro
-            window.location.href = 'login.html'; 
-        } else {
-            alert(`Falha no Cadastro (${res.status}): ${resposta.message}`);
-        }
-    } catch (erro) {
-        console.error("Erro na requisição Fetch:", erro);
-        alert("❌ Falha ao conectar com o servidor.");
+    const existingUser = users.find(user => user.email === email);
+    
+    if (existingUser) {
+        alert("Falha: Este e-mail já está cadastrado no seu navegador.");
+        return;
     }
+
+    // 2. Adiciona o novo usuário
+    const newUser = { email: email, senha: senha };
+    users.push(newUser);
+
+    // 3. Armazena a lista ATUALIZADA de volta no sessionStorage
+    sessionStorage.setItem('appUsers', JSON.stringify(users));
+
+    alert("✅ Cadastro local realizado com sucesso! Redirecionando para o Login.");
+    window.location.href = 'login.html'; 
 }

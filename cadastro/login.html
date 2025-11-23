@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,33 +16,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="../assets/logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="jogo.css">
-    <title>Jogo</title>
+    <link rel="stylesheet" href="login.css">
+    <script src="./login.js" defer></script>
+    <title>Login com sua conta</title>
 </head>
 <body>
     <header>
         <div class="logo">
             <img src="../assets/logo.png" alt="">
-            <a href="../index.html">GEOTEC</a>
-           </div>
+            <a href="">GEOTEC</a>
+        </div>
         <nav>
             
-            <a href="../index.html">Home</a>
-            <a href="./clima.html">Clima</a>
-            <a href="./enem.html">Enem</a>
-            <a href="./jogo.html" class="active">Jogo</a>
-            <a href="./equipe.html">Equipe</a>
+            <a href="./index.html">Home</a>
+            <a href="./pages/clima.html">Clima</a>
+            <a href="./pages/enem.html">Enem</a>
+            <a href="./pages/jogo.html">Jogo</a>
+            <a href="./pages/equipe.html">Equipe</a>
+            <a href="./cadastro/login.html" class="active">Fazer login</a>
         </nav>
+        
     </header>
 
     <main>
-        <h1>Jogue Nosso Jogo!</h1>
+        <h1>Login com sua conta</h1>
+        <form action="">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email">
 
-        <p>ajude o cientista a chegar em seu laboratório, enfrentando diversos biomas e climas, derrotando inimigos e testando o seu conhecimento até aqui.</p>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha">
 
-        <button>
-            <a href="../jogo/tela-jogo.html">Jogar</a>
-        </button>
+            <input type="checkbox" id="lembrar-me">
+            <label for="lembrar-me">Lembrar-me</label>
+        </form>
+        <button onclick="sendUser()">Login</button>
     </main>
 </body>
 </html>

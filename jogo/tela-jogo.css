@@ -54,7 +54,7 @@ header div{
 
 
 header div a{
-    font-size: 30px;
+    font-size: 1.875rem;
     letter-spacing: 0.3rem;
     text-decoration: none;
     color: var(--white);
@@ -79,7 +79,7 @@ header nav  a{
 
 main{
 
-    background-image: url(./assets/jogo-img.png);
+    background-image: url(../assets/jogo-img.png);
     background-size: 100%;
     background-repeat: no-repeat;
     display: flex;

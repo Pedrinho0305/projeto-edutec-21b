@@ -38,3 +38,6 @@ function handleCadastro(e) {
     alert("✅ Cadastro local realizado com sucesso! Redirecionando para o Login.");
     window.location.href = 'login.html'; 
 }
+
+// script.js
+

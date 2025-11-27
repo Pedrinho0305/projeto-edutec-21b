@@ -1,24 +1,25 @@
 // script.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Chave de login padronizada
+    // Chave usada para verificar o status de login
     const USUARIO_ATIVO_KEY = 'usuarioAtivo'; 
     
     // 1. Elementos HTML que precisamos manipular
-    const loginLinkAnchor = document.querySelector('nav a[href="../cadastro/login.html"]');
+    const loginLink = document.querySelector('a[href="./cadastro/login.html"]');
     const userStatusDisplay = document.getElementById('user-status-display');
-    
-    // 2. Status do usuário
+    const navBar = document.querySelector('nav');
+
+    // Verifica o status de login no sessionStorage
     const userEmail = sessionStorage.getItem(USUARIO_ATIVO_KEY);
 
     // =======================================================
     // FUNÇÃO DE LOGOUT
     // =======================================================
     function handleLogout(event) {
-        event.preventDefault(); 
-        sessionStorage.removeItem(USUARIO_ATIVO_KEY); 
-        // Recarrega a página principal (fora de iframe, se houver)
-        window.top.location.reload(); 
+        event.preventDefault(); // Impede o link de navegar
+        sessionStorage.removeItem(USUARIO_ATIVO_KEY); // Remove o email
+        // Recarrega a página principal para atualizar o estado
+        window.location.reload(); 
     }
 
     if (userEmail) {
@@ -26,36 +27,30 @@ document.addEventListener('DOMContentLoaded', () => {
         // AÇÕES SE O USUÁRIO ESTIVER LOGADO (CADASTRADO)
         // =======================================================
         
-        console.log(`[INDEX] Usuário ativo: ${userEmail}. Ocultando link de login.`);
+        console.log(`Usuário ativo: ${userEmail}. Ocultando link de login.`);
         
         // 1. FAZ A ÂNCORA DE LOGIN SUMIR
-        if (loginLinkAnchor) {
-            loginLinkAnchor.style.display = 'none';
+        if (loginLink) {
+            loginLink.style.display = 'none';
         }
         
         // 2. EXIBE O E-MAIL DO USUÁRIO E O BOTÃO DE SAIR
         if (userStatusDisplay) {
-            
-            // Limpa qualquer conteúdo anterior
-            userStatusDisplay.innerHTML = '';
-            
-            // Cria elemento para exibir o email (ex: "Bem-vindo, nome")
+            // Cria um novo elemento para exibir o email
             const emailSpan = document.createElement('span');
-            // Exibe apenas a parte do nome antes do @ (para ficar mais limpo)
-            emailSpan.innerHTML = `<img src="../assets/material-symbols_person.svg" alt=""> <strong class = "nome-usuario">${userEmail.split('@')[0]}</strong>`;
+            emailSpan.innerHTML = `<img src="./assets/material-symbols_person.svg" alt=""> <strong class = "nome-usuario">${userEmail.split('@')[0]}</strong>`;
             emailSpan.style.marginRight = '10px';
-            emailSpan.style.color = '#388e3c'; 
-            emailSpan.style.fontWeight = '500';
+            emailSpan.style.color = '#388e3c'; // Cor verde para indicar sucesso
 
             // Cria o link de Sair/Logout
             const logoutLink = document.createElement('a');
             logoutLink.href = '#';
             logoutLink.textContent = 'Sair';
-            logoutLink.style.color = '#d32f2f'; 
+            logoutLink.style.color = '#d32f2f'; // Cor vermelha para indicar saída
             logoutLink.style.textDecoration = 'none';
             logoutLink.addEventListener('click', handleLogout);
 
-            // Adiciona os elementos ao contêiner de status no header
+            // Adiciona os elementos ao contêiner de status
             userStatusDisplay.appendChild(emailSpan);
             userStatusDisplay.appendChild(logoutLink);
         }
@@ -65,16 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // AÇÕES SE O USUÁRIO NÃO ESTIVER LOGADO
         // =======================================================
         
-        console.log("[INDEX] Nenhum usuário logado. Link 'Fazer login' visível.");
+        console.log("Nenhum usuário logado. Link 'Fazer login' visível.");
         
-        // 1. Garante que o link de login está visível
-        if (loginLinkAnchor) {
-            loginLinkAnchor.style.display = 'inline';
+        // Garante que o link de login está visível (caso haja manipulação anterior)
+        if (loginLink) {
+            loginLink.style.display = 'inline';
         }
-        
-        // 2. Garante que a área de status está vazia
-        if (userStatusDisplay) {
-            userStatusDisplay.innerHTML = '';
-        }
+        // O userStatusDisplay permanece vazio.
     }
 });

@@ -1,0 +1,204 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+:root{
+    --dark-green: #2F4F4F;
+    --white: #FFFFFF;
+    --green: #467474;
+    --water-green: #60A1A0;
+    --gray-green: #648991;
+    --light-gray-green: #9DB6BC;
+    --background: #3C6B6B;
+    --white: #fff;
+    --black: #000;    
+    
+}
+
+body{
+    min-height: 100vh;
+    background: radial-gradient(55.95% 50% at 50% 50%, #92CAC9 0%, #60A1A0 100%);
+    min-width: fit-content;
+}
+
+header{
+    background: var(--background);
+
+    padding-block: 1.5rem;
+    padding-left: 1rem;
+    display: flex;
+    justify-content: space-between;
+    
+    
+    align-items: center;
+}
+
+header nav{
+    margin-inline: auto;
+    
+}
+
+header div{
+    margin-left: 0.5rem;
+}
+
+.logo{
+    display: flex;
+    margin-left: 4rem;
+    gap: 1rem;
+}
+
+
+header div a{
+    font-size: 1.875rem;
+    letter-spacing: 0.3rem;
+    text-decoration: none;
+    color: var(--white);
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+}
+
+header img {
+    border-radius: 10rem;
+}
+
+header nav  a{
+    font-weight: 700;
+    font-size: 18px;
+    font-family: "Quicksand", sans-serif;
+    text-transform: uppercase;
+    margin-left: 4rem;
+    text-decoration: none;
+    color: var(--white);
+
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+
+    img{
+        margin-bottom: 0;
+        border: none;
+    }
+
+    h2{
+    font-family: 'DM Serif Display', serif;
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--black);
+    font-size: 2.5em;
+    margin-top: 2rem;
+    }
+}
+
+.container1{
+    border-radius: 11.4375rem;
+    background: var(--white);
+    width: 110rem;
+    margin-inline: auto;
+    height: 40rem;
+    padding: 5rem 5rem 5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.user-info{
+    display: flex;
+    gap: 15rem;
+    width: 72.75rem;
+    height: 4.125rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-name {
+  color: #000;
+
+font-family: Quicksand;
+font-size: 1.5rem;
+font-style: normal;
+font-weight: 600;
+line-height: 140%; /* 2.1rem */
+  width: 72.75rem;
+ height: 4.125rem;
+}
+
+.user-email {
+  color: #000;
+
+font-family: Quicksand;
+font-size: 1.5rem;
+font-style: normal;
+font-weight: 600;
+line-height: 140%; /* 2.1rem */
+  width: 72.75rem;
+height: 4.125rem;
+}
+
+.user-score {
+ color: #000;
+
+font-family: Quicksand;
+font-size: 1.5rem;
+font-style: normal;
+font-weight: 600;
+line-height: 140%; /* 2.1rem */
+  text-align: right;
+  width: 72.75rem;
+height: 4.125rem;
+}
+
+
+   
+
+
+
+/* Título (Se for adicionado um H1 ou H2) */
+
+/* Estilo para a mensagem de carregamento/erro */
+
+
+/*
+ * ----------------------------------------------------
+ * ESTILOS DA LISTA DE RANKING (Gerada pelo JS)
+ * ----------------------------------------------------
+ */
+
+/* Remove o conteúdo placeholder do HTML */
+#ranking-list-container1 > p {
+    display: none; 
+}
+
+
+
+
+/*
+ * ----------------------------------------------------
+ * RESPONSIVIDADE BÁSICA
+ * ----------------------------------------------------
+ */
+@media (max-width: 850px) {
+    #ranking-list-container {
+        margin: 30px 10px;
+        padding: 20px;
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+    
+    nav a {
+        margin: 5px 10px 5px 0;
+    }
+}

@@ -55,7 +55,7 @@ body {
     animation: clouds-animation 10s infinite linear;
 }
 
-.botao-iniciar, .botao-reiniciar {
+#botao-iniciar, .botao-reiniciar {
     background-color: #4CAF50;
     border: none;
     color: white;

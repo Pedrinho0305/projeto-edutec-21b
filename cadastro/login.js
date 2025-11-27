@@ -31,7 +31,7 @@ function handleLogin(e) {
         alert(`✅ Login local realizado com sucesso! Bem-vindo(a), ${email}.`);
         
         // 4. Guarda o e-mail logado no localStorage para o JOGO e o Ranking
-        localStorage.setItem('currentUserEmail', email);
+        sessionStorage.setItem('usuarioAtivo', email);
         
         // 5. Redireciona para o jogo
         window.location.href = '../index.html'; 

@@ -1,198 +1,99 @@
-// ./js/ranking.js
+// pontuacao.js - CÓDIGO FINAL CORRIGIDO
 
-const API_URL = 'http://localhost:5500';
+// URL base da sua API na Vercel
+const API_URL = 'https://backend-edutec-85jy.vercel.app';
+const RANKING_ENDPOINT = '/'; // Assumindo que a rota GET / lista todos os usuários
+
+// REMOVIDA A VARIÁVEL GLOBAL:
+// const containerRanking = document.querySelector('.container1'); // <-- Foi movida para dentro do DOMContentLoaded
 
 /**
- * Busca os dados de ranking do servidor, exibe em lista e loga os dados do usuário.
+ * Função para buscar os dados de todos os usuários na API.
  */
-async function fetchRanking() {
-    //const listContainer = document.getElementById('ranking-list-container');
-    
-    // CORREÇÃO 1: Usando a chave padronizada 'usuarioAtivo'
-    const loggedEmail = sessionStorage.getItem('usuarioAtivo');
-    
-    // NOTA: userBestScore (Local) só é confiável se for atualizado após o POST /update-score
-    // Para fins de exibição, vamos confiar no rankingData.
-    let userBestScore = sessionStorage.getItem('userBestScore') || 0; 
-    
-    // Elemento para exibir a melhor pontuação pessoal
-    const personalScoreDisplay = document.getElementById('personal-best-score');
-
-
-    // 1. Imprime os dados do usuário no console
-    if (loggedEmail) {
-        console.log("==================================================");
-        console.log(`[RANKING - USUÁRIO LOGADO]`);
-        console.log(`Email: ${loggedEmail}`);
-        console.log(`Melhor Pontuação Pessoal (Local): ${userBestScore}`);
-        console.log("==================================================");
-    } else {
-        console.log("[RANKING] Nenhum usuário logado no momento.");
-    }
-
-
-    // 2. Carregamento visual
-    if (listContainer) {
-        listContainer.innerHTML = '<p style="text-align: center;">Carregando Ranking...</p>';
-    }
-
-    // Limpa a pontuação pessoal
-    if (personalScoreDisplay) {
-        personalScoreDisplay.textContent = '';
-    }
-
-    // 3. Comunicação com o Backend
+async function fetchRankingData(containerRanking) { // AGORA RECEBE containerRanking COMO ARGUMENTO
     try {
-        const response = await fetch(`${API_URL}/ranking`);
-
+        console.log(`Buscando dados de ranking em: ${API_URL}${RANKING_ENDPOINT}`);
+        
+        const response = await fetch(`${API_URL}${RANKING_ENDPOINT}`);
+        
         if (!response.ok) {
-            const errorText = await response.text();
-            if (listContainer) {
-                listContainer.innerHTML = `<p style="text-align: center; color: red;">Erro ${response.status}: Falha ao buscar dados. O servidor não está respondendo. Detalhe: ${errorText.substring(0, 50)}...</p>`;
-            }
-            console.error('Erro de resposta do servidor:', response.status, errorText);
-            return;
+            // Tenta ler a mensagem de erro do servidor
+            let errorText = await response.text();
+            throw new Error(`Erro HTTP ${response.status}: ${errorText || response.statusText}`);
         }
+        
+        const users = await response.json();
+        return users;
 
-        const rankingData = await response.json();
-        let foundUserInRanking = false; // Flag para rastrear o usuário logado
-
-        if (listContainer) {
-            listContainer.innerHTML = ''; // Limpa o carregamento
-
-            if (rankingData.length === 0) {
-                listContainer.innerHTML = '<p style="text-align: center;">Nenhum usuário cadastrado ou com pontuação no ranking ainda.</p>';
-                return;
-            }
-
-            const ul = document.createElement('ul'); 
-            ul.style.listStyleType = 'none';
-            ul.style.padding = '0';
-
-            // 4. Montagem da lista
-            rankingData.forEach((user, index) => {
-                const li = document.createElement('li');
-                const displayName = user.email.split('@')[0].toUpperCase();
-                
-                li.innerHTML = `
-                    <span style="font-weight: bold; margin-right: 15px; font-size: 1.2em;">#${index + 1}</span> 
-                    <span style="font-weight: 500;">${displayName}</span>: 
-                    <span style="float: right; font-weight: bold; color: #4CAF50; font-size: 1.1em;">${user.score} pts</span>
-                `;
-
-                // Adiciona um estilo de destaque para o usuário logado E ATUALIZA O SCORE PESSOAL
-                if (loggedEmail && user.email === loggedEmail) {
-                    li.style.backgroundColor = '#e8f5e9'; 
-                    li.style.borderLeft = '4px solid #4CAF50';
-                    li.style.padding = '10px 15px';
-                    li.style.fontWeight = 'bold';
-                    
-                    userBestScore = user.score; // Pega o score do banco, que é mais confiável
-                    foundUserInRanking = true;
-                } else {
-                    li.style.padding = '8px 15px';
-                    li.style.borderBottom = '1px dashed #eee';
-                }
-                li.style.marginBottom = '5px';
-                
-                ul.appendChild(li);
-            });
-            
-            listContainer.appendChild(ul);
-            
-            // 5. Exibe a melhor pontuação pessoal (se o usuário estiver no ranking)
-            if (loggedEmail && foundUserInRanking && personalScoreDisplay) {
-                personalScoreDisplay.textContent = `Seu Recorde: ${userBestScore} pts`;
-            }
-        }
     } catch (error) {
-        if (listContainer) {
-            listContainer.innerHTML = '<p style="text-align: center; color: red; padding: 20px;">' +
-                                      '🚨 Erro de Rede. Verifique se o servidor de API (porta 5500) está ativo.' +
-                                      '</p>';
-        }
-        console.error('Erro fatal ao buscar o ranking:', error);
+        console.error("❌ Erro ao buscar dados de ranking:", error);
+        // Exibe uma mensagem de erro na tela
+        containerRanking.innerHTML = '<p class="error-message">Não foi possível carregar o Ranking. Verifique a conexão com o servidor.</p>';
+        return [];
     }
 }
 
-// Inicia a função ao carregar a página
-document.addEventListener('DOMContentLoaded', fetchRanking);
+/**
+ * Função para ordenar os usuários e exibir o Top 10 no HTML.
+ */
+function displayRanking(users, containerRanking) { // AGORA RECEBE containerRanking COMO ARGUMENTO
+    // 1. Filtra usuários que têm pontuação (score) definida e ordena de forma decrescente
+    const rankedUsers = users
+        .filter(user => user.score && typeof user.score === 'number')
+        .sort((a, b) => b.score - a.score);
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Chave de login padronizada
-    const USUARIO_ATIVO_KEY = 'usuarioAtivo'; 
-    
-    // 1. Elementos HTML que precisamos manipular
-    const loginLinkAnchor = document.querySelector('nav a[href="../cadastro/login.html"]');
-    const userStatusDisplay = document.getElementById('user-status-display');
-    
-    // 2. Status do usuário
-    const userEmail = sessionStorage.getItem(USUARIO_ATIVO_KEY);
+    // Limpa o conteúdo estático atual
+    containerRanking.innerHTML = ''; 
 
-    // =======================================================
-    // FUNÇÃO DE LOGOUT
-    // =======================================================
-    function handleLogout(event) {
-        event.preventDefault(); 
-        sessionStorage.removeItem(USUARIO_ATIVO_KEY); 
-        // Recarrega a página principal (fora de iframe, se houver)
-        window.top.location.reload(); 
+    // 2. Determina o Top 10 (ou menos, se não houver 10 usuários)
+    const top10 = rankedUsers.slice(0, 10);
+
+    if (top10.length === 0) {
+        containerRanking.innerHTML = '<p class="no-data-message">Nenhum jogador com pontuação registrada ainda.</p>';
+        return;
     }
 
-    if (userEmail) {
-        // =======================================================
-        // AÇÕES SE O USUÁRIO ESTIVER LOGADO (CADASTRADO)
-        // =======================================================
+    // 3. Cria a estrutura HTML dinamicamente
+    top10.forEach((user, index) => {
+        const rank = index + 1;
         
-        console.log(`[INDEX] Usuário ativo: ${userEmail}. Ocultando link de login.`);
-        
-        // 1. FAZ A ÂNCORA DE LOGIN SUMIR
-        if (loginLinkAnchor) {
-            loginLinkAnchor.style.display = 'none';
-        }
-        
-        // 2. EXIBE O E-MAIL DO USUÁRIO E O BOTÃO DE SAIR
-        if (userStatusDisplay) {
-            
-            // Limpa qualquer conteúdo anterior
-            userStatusDisplay.innerHTML = '';
-            
-            // Cria elemento para exibir o email (ex: "Bem-vindo, nome")
-            const emailSpan = document.createElement('span');
-            // Exibe apenas a parte do nome antes do @ (para ficar mais limpo)
-            emailSpan.innerHTML =  `<img src="../assets/material-symbols_person.svg" alt=""> <strong >${userEmail.split('@')[0]}</strong>`;
-            emailSpan.style.marginRight = '10px';
-            emailSpan.style.color = '#388e3c'; 
-            emailSpan.style.fontWeight = '500';
+        // Determina a classe para os primeiros colocados (opcional para estilização)
+        let rankClass = '';
+        if (rank === 1) rankClass = 'rank-gold';
+        else if (rank === 2) rankClass = 'rank-silver';
+        else if (rank === 3) rankClass = 'rank-bronze';
 
-            // Cria o link de Sair/Logout
-            const logoutLink = document.createElement('a');
-            logoutLink.href = '#';
-            logoutLink.textContent = 'Sair';
-            logoutLink.style.color = '#d32f2f'; 
-            logoutLink.style.textDecoration = 'none';
-            logoutLink.addEventListener('click', handleLogout);
+        const rowHTML = `
+            <div class="user-row ${rankClass}">
+                <span class="rank-number">#${rank}</span>
+                <div class="user-info">
+                    <span class="user-name">${user.name || 'Nome Desconhecido'}</span>
+                    <span class="user-email">${user.email}</span>
+                    <span class="user-score">${user.score}</span>
+                </div>
+            </div>
+        `;
+        
+        containerRanking.innerHTML += rowHTML;
+    });
+}
 
-            // Adiciona os elementos ao contêiner de status no header
-            userStatusDisplay.appendChild(emailSpan);
-            userStatusDisplay.appendChild(logoutLink);
-        }
+/**
+ * Inicializa o carregamento do ranking ao carregar a página.
+ */
+document.addEventListener('DOMContentLoaded', async () => {
+    // CORREÇÃO CRÍTICA: DEFINIR A VARIÁVEL AQUI DENTRO, após o HTML ser carregado.
+    const containerRanking = document.querySelector('.container1');
 
-    } else {
-        // =======================================================
-        // AÇÕES SE O USUÁRIO NÃO ESTIVER LOGADO
-        // =======================================================
-        
-        console.log("[INDEX] Nenhum usuário logado. Link 'Fazer login' visível.");
-        
-        // 1. Garante que o link de login está visível
-        if (loginLinkAnchor) {
-            loginLinkAnchor.style.display = 'inline';
-        }
-        
-        // 2. Garante que a área de status está vazia
-        if (userStatusDisplay) {
-            userStatusDisplay.innerHTML = '';
-        }
+    if (!containerRanking) {
+        console.error("Erro: O elemento com a classe '.container1' não foi encontrado no HTML.");
+        return; // Sai da função se o elemento não existir, evitando o erro 'null'.
     }
+
+    // Exibe um estado de carregamento inicial
+    containerRanking.innerHTML = '<p class="loading-message">Carregando Ranking...</p>';
+    
+    // Passar containerRanking para as funções
+    const users = await fetchRankingData(containerRanking);
+    displayRanking(users, containerRanking);
 });

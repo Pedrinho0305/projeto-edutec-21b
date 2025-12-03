@@ -1,3 +1,5 @@
+// main.js - Código Final Corrigido (Foco em Score e URL)
+
 const jogador = document.querySelector('.jogador');
 const pipe = document.querySelector('.pipe');
 const nuvem = document.querySelector('.nuvem');
@@ -5,39 +7,34 @@ const scoreElement = document.querySelector('.score');
 const imagemElemento = document.querySelector(".pipe");
 const gameBoard = document.querySelector('.game-board');
 
-// Certifique-se de que o botão 'Iniciar' tem o ID "botao-iniciar" no HTML
 const startButton = document.querySelector('#botao-iniciar'); 
 const restartButton = document.querySelector('.botao-reiniciar');
 
-// No seu main.js, verifique se a constante que define a URL da API
-// está apontando para o ENDPOINT correto do backend.
+// CORREÇÃO 1: URL ajustada para evitar a barra dupla (//)
+const API_URL = 'https://backend-edutec-85jy.vercel.app'; 
+const UPDATE_SCORE_ENDPOINT = 'update-score'; // CORREÇÃO 2: Removida a barra inicial (/)
+const PAGINA_LOGIN = '../cadastro/login.html'; 
 
-const API_URL = 'http://localhost:5500'; // Raiz do seu servidor Node.js
-const UPDATE_SCORE_ENDPOINT = '/update-score'; // A rota configurada no server.js // Corrigido para a rota de update
-const PAGINA_LOGIN = '../cadastro/login.html'; // Usando o caminho que você definiu
-
-// 1. PADRONIZAÇÃO DO ARMAZENAMENTO: Usa 'usuarioAtivo' do sessionStorage
+// Variáveis de estado
 let userEmail = sessionStorage.getItem('usuarioAtivo'); 
+let gameLoop = null; // Variável para controlar o loop principal
+let backgroundInterval = null; // Variável para controlar a mudança de background
 
-// Variáveis visuais e de pontuação
+// ... [Variáveis visuais, cores, fundos, winScore] ...
 const imagens = [
-    "images/planta1-removebg-preview.png",
-    "images/cacto1-removebg-preview.png",
-    "images/neve1-removebg-preview.png",
-    "images/pedra1-removebg-preview.png"
+    "images/planta1-removebg-preview.png", "images/cacto1-removebg-preview.png",
+    "images/neve1-removebg-preview.png", "images/pedra1-removebg-preview.png"
 ];
 const fundos = [
-    "url('images/tropical1.jpg')",
-    "url('images/deserto1.jpg')",
-    "url('images/polar2.jpg')",
-    "url('images/floresta1.jpg')"
+    "url('images/tropical1.jpg')", "url('images/deserto1.jpg')",
+    "url('images/polar2.jpg')", "url('images/floresta1.jpg')"
 ];
 const cores = ['#FFFFFF', '#000000', '#000000', '#FFFFFF'];
 const sombras = ['2px 2px 4px #000000', '2px 2px 4px #FFFFFF', '2px 2px 4px #FFFFFF', '2px 2px 4px #000000'];
 const winScore = 1000;
 
+
 const jump = () => {
-    // Adiciona o jump apenas se a classe 'jump' não estiver presente
     if (!jogador.classList.contains('jump')) {
         jogador.classList.add('jump');
         setTimeout(() => {
@@ -47,41 +44,55 @@ const jump = () => {
 }
 
 async function sendScoreToRanking(score) {
-    if (!userEmail) return; 
+    
+    let userEmail = sessionStorage.getItem('usuarioAtivo'); // Reafirma o valor aqui
+
+    if (!userEmail) {
+        console.warn("Usuário não logado. Pontuação não será salva.");
+        return; 
+    }
+    
+    // CORREÇÃO 3: Garantir que a pontuação enviada é um número, com fallback para 0.
+    const finalScore = typeof score === 'number' ? score : 0; 
+
+    // Log de debug com a nova URL
+    console.log(`Tentando enviar pontuação. URL COMPLETA: ${API_URL}/${UPDATE_SCORE_ENDPOINT}`);
+    console.log(`Dados enviados: Email: ${userEmail}, Score: ${finalScore}`);
 
     try {
-        // Envia para a rota de atualização de score
-        const response = await fetch(`${API_URL}${UPDATE_SCORE_ENDPOINT}`, { 
+        // CORREÇÃO 4: Concatenação explícita com a barra (/)
+        const response = await fetch(`${API_URL}/${UPDATE_SCORE_ENDPOINT}`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 email: userEmail, 
-                newScore: score // O nome da propriedade deve ser 'newScore'
+                newScore: finalScore // Usando a pontuação corrigida
             })
         });
-       if (response.ok) {
-            const data = await response.json();
-            console.log("Pontuação salva com sucesso:", data);
+        
+        // ... (restante do tratamento de resposta)
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("Pontuação salva com sucesso:", data.message);
         } else {
-            // Se o backend retornar 404, 500, etc.
-            console.error("Erro ao salvar pontuação no backend:", response.status, await response.text());
+            console.error("Erro ao salvar pontuação no backend:", data.message);
         }
 
     } catch (error) {
-        // Erro de rede (servidor desligado)
-        console.error("Erro de conexão ao tentar salvar pontuação:", error);
+        // Captura o 'Failed to fetch'
+        console.error("Erro de conexão ao tentar salvar pontuação:", error); 
     }
 }
 
 function startGame() {
-    // SE O USUÁRIO NÃO ESTIVER LOGADO, ESTA FUNÇÃO NUNCA DEVE SER CHAMADA DIRETAMENTE.
-    // A lógica de bloqueio no DOMContentLoaded já resolve isso.
-    
-    // Configuração inicial da UI
+    // Esconde o botão de Iniciar
     startButton.style.display = 'none';
     restartButton.style.display = 'none';
-    gameBoard.style.display = 'block';
+    // Mostra o tabuleiro do jogo (que estava oculto)
+    gameBoard.style.display = 'block'; 
 
+    // Reinicia as animações e estilos
     pipe.style.animation = 'pipe-animation 1.5s infinite linear';
     pipe.style.display = 'block';
     pipe.style.left = '';
@@ -95,13 +106,15 @@ function startGame() {
     let score = 0;
     let index = 0;
 
+    // Configuração inicial do ambiente
     document.body.style.backgroundImage = fundos[index];
     scoreElement.style.color = cores[index];
     scoreElement.style.textShadow = sombras[index];
     imagemElemento.src = imagens[index];
     scoreElement.textContent = `Pontuação: 0`;
 
-    const backgroundInterval = setInterval(() => {
+    // Loop de mudança de background
+    backgroundInterval = setInterval(() => {
         index = (index + 1) % imagens.length;
         imagemElemento.src = imagens[index];
         document.body.style.backgroundImage = fundos[index];
@@ -109,45 +122,44 @@ function startGame() {
         scoreElement.style.textShadow = sombras[index];
     }, 10000);
 
-    const loop = setInterval(() => {
+    // Loop principal do jogo (Colisão e Pontuação)
+    gameLoop = setInterval(() => {
         const pipePosition = pipe.offsetLeft;
-        // Posição do jogador deve ser obtida dentro do loop para ser precisa
         const jogadorPosition = +window.getComputedStyle(jogador).bottom.replace('px', ''); 
 
         score++;
         scoreElement.textContent = `Pontuação: ${score}`;
 
-        // Lógica de Game Over (Colisão)
+        // Lógica de Game Over
         if (pipePosition <= 120 && jogadorPosition < 90 && pipePosition > 0) {
-            clearInterval(loop);
+            clearInterval(gameLoop);
             clearInterval(backgroundInterval);
+            document.removeEventListener('keydown', jump); // Remove o listener
 
             pipe.style.animation = 'none';
             pipe.style.left = `${pipePosition}px`;
 
             jogador.style.animation = 'none';
             jogador.style.bottom = `${jogadorPosition}px`;
-
             jogador.src = './images/game-over.png';
             jogador.style.width = '75px';
             jogador.style.marginLeft = '50px';
 
             restartButton.style.display = 'block';
             
-            // Envia a pontuação para o ranking
             sendScoreToRanking(score);
         }
 
-        // Lógica de Vitória (Win Score)
+        // Lógica de Vitória
         if (score >= winScore) {
-            clearInterval(loop);
+            clearInterval(gameLoop);
             clearInterval(backgroundInterval);
+            document.removeEventListener('keydown', jump); // Remove o listener
 
             pipe.style.display = 'none';
             nuvem.style.display = 'none';
-
+            
             jogador.style.animation = 'none';
-
             jogador.src = './images/imagemVence.gif';
             jogador.style.width = 'auto';
             jogador.style.height = '400px'; 
@@ -157,8 +169,6 @@ function startGame() {
             jogador.style.marginLeft = '0';
 
             restartButton.style.display = 'block';
-            
-            // Envia a pontuação de vitória
             sendScoreToRanking(winScore);
         }
     }, 100);
@@ -166,51 +176,37 @@ function startGame() {
     document.addEventListener('keydown', jump);
 }
 
-// 2. Lógica de Bloqueio Integrada (Substitui a função bloqueio())
-
+// Lógica de Bloqueio/Inicialização
 document.addEventListener('DOMContentLoaded', () => {
-    // Garante que a checagem use a variável correta
     userEmail = sessionStorage.getItem('usuarioAtivo'); 
+    
+    // Esconde o gameBoard por padrão (para ser iniciado pelo botão)
+    gameBoard.style.display = 'none'; 
 
-    // Função de redirecionamento (precisa ser definida aqui para ser removida/adicionada)
     const redirectToLogin = () => {
         window.top.location.href = PAGINA_LOGIN;
     };
+    
+    // Garante que os botões são válidos antes de adicionar listeners
+    if (!startButton || !restartButton) {
+        console.error("Erro: Elementos #botao-iniciar ou .botao-reiniciar não encontrados no HTML.");
+        return;
+    }
 
     if (userEmail) {
-        // Se logado: Configura o botão para INICIAR O JOGO
         startButton.textContent = "Iniciar Jogo";
-        
-        // 1. Remove qualquer listener anterior que possa estar lá (como o de redirecionamento)
         startButton.removeEventListener('click', redirectToLogin); 
-        
-        // 2. ADICIONA o listener correto: Chama a função que inicia a animação do jogo
         startButton.addEventListener('click', startGame); 
         
-        console.log(`[STATUS] Usuário logado: ${userEmail}. Botão configurado para INICIAR JOGO.`);
-        
-        // Oculta o tabuleiro para esperar o clique em 'Iniciar Jogo'
-        gameBoard.style.display = 'none';
-        
     } else {
-        // Se não logado: Configura o botão para REDIRECIONAR
         startButton.textContent = "Fazer Login / Cadastrar";
-        
-        // Adiciona o listener para redirecionar
         startButton.addEventListener('click', redirectToLogin); 
-        
-        console.log("[STATUS] Usuário não logado. Botão configurado para IR AO LOGIN.");
-        
-        // Oculta completamente o tabuleiro do jogo (visualmente bloqueado)
-        gameBoard.style.display = 'none'; 
     }
 });
 
-// Listener de Reinício (permanece o mesmo)
-restartButton.addEventListener('click', () => {
-    location.reload();
-});
-
-
-// Você DEVE garantir que o botão no HTML tem o ID="botao-iniciar".
-// <button id="botao-iniciar" class="botao-iniciar">Iniciar</button>
+// Listener de Reinício
+if (restartButton) {
+    restartButton.addEventListener('click', () => {
+        location.reload();
+    });
+}

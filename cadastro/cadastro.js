@@ -1,43 +1,71 @@
-// cadastro.js (USANDO sessionStorage)
+// O URL do endpoint de cadastro do seu backend
+const API_CADASTRO_URL = "https://backend-edutec-85jy.vercel.app/cadastrar";
 
-const formCadastro = document.getElementById('form-cadastro');
+// 1. Obtém o formulário e o botão
+const formCadastro = document.getElementById('form-cadastro'); 
+// Se você não tiver um <form id="form-cadastro">, use o botão diretamente:
+const button = document.querySelector("button"); 
 
+// 2. Adiciona o Listener ao formulário ou botão
 if (formCadastro) {
     formCadastro.addEventListener('submit', handleCadastro);
+} else if (button) {
+    button.addEventListener('click', handleCadastro);
 }
 
-function handleCadastro(e) {
+
+/**
+ * Função principal para lidar com o envio do formulário de cadastro.
+ * Realiza validações e envia os dados para a API externa.
+ */
+async function handleCadastro(e) {
     e.preventDefault(); 
     
-    const email = document.getElementById("email").value.trim();
-    const senha = document.getElementById("senha").value.trim();
+    // Obtém os valores dos campos
+    const name = document.querySelector("#nome") ? document.querySelector("#nome").value.trim() : "";
+    const email = document.querySelector("#email").value.trim();
+    const password = document.querySelector("#senha").value.trim();
     
-    if (!email || !senha) {
-        alert("Preencha todos os campos.");
+    // Validação de campos (similar à lógica do primeiro código)
+    if (!name || !email || !password) {
+        alert("🚨 Por favor, preencha todos os campos (Nome, E-mail e Senha).");
         return;
     }
 
-    // 1. Verifica se o usuário JÁ existe no sessionStorage
-    const storedUsersJSON = sessionStorage.getItem('appUsers');
-    const users = storedUsersJSON ? JSON.parse(storedUsersJSON) : [];
-
-    const existingUser = users.find(user => user.email === email);
+    // Cria o objeto de usuário no formato esperado pela API
+    const user = {
+        name, 
+        email,
+        password
+    };
     
-    if (existingUser) {
-        alert("Falha: Este e-mail já está cadastrado no seu navegador.");
-        return;
+    try {
+        // Envia a requisição POST para a API (similar à lógica do segundo código)
+        const response = await fetch(API_CADASTRO_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ user }) // Envia o objeto aninhado 'user'
+        });
+
+        const data = await response.json();
+
+        // Verifica o status da resposta (se a requisição HTTP foi bem-sucedida ou não)
+        if (response.ok && response.status === 201) {
+             alert(`✅ Sucesso! ${data.message || "Usuário cadastrado com sucesso!"}`);
+        } else {
+             // Exibe a mensagem de erro retornada pela API
+             alert(`❌ Falha no Cadastro: ${data.message || "Ocorreu um erro desconhecido."}`);
+             return; // Interrompe o processo para não redirecionar
+        }
+
+    } catch (error) {
+        console.error("Erro ao conectar ou processar a resposta da API:", error);
+        alert("⚠️ Erro de conexão com o servidor. Verifique o console.");
+        return; // Interrompe o processo para não redirecionar
     }
 
-    // 2. Adiciona o novo usuário
-    const newUser = { email: email, senha: senha };
-    users.push(newUser);
-
-    // 3. Armazena a lista ATUALIZADA de volta no sessionStorage
-    sessionStorage.setItem('appUsers', JSON.stringify(users));
-
-    alert("✅ Cadastro local realizado com sucesso! Redirecionando para o Login.");
-    window.location.href = 'login.html'; 
+    // Redirecionamento após o sucesso
+    window.location.href = "./login.html";
 }
-
-// script.js
-

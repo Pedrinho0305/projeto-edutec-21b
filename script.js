@@ -38,15 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userStatusDisplay) {
             // Cria um novo elemento para exibir o email
             const emailSpan = document.createElement('span');
-            emailSpan.innerHTML = `<img src="./assets/material-symbols_person.svg" alt=""> <strong class = "nome-usuario">${userEmail.split('@')[0]}</strong>`;
-            emailSpan.style.marginRight = '10px';
-            emailSpan.style.color = '#388e3c'; // Cor verde para indicar sucesso
+            emailSpan.innerHTML = `<div class="img-text"><img src="./assets/material-symbols_person.svg" alt=""> <strong class = "nome-usuario">${userEmail.split('@')[0]} |</strong></div>`;
+            
+            // Cor verde para indicar sucesso
 
             // Cria o link de Sair/Logout
             const logoutLink = document.createElement('a');
             logoutLink.href = '#';
             logoutLink.textContent = 'Sair';
-            logoutLink.style.color = '#d32f2f'; // Cor vermelha para indicar saída
+             // Cor vermelha para indicar saída
             logoutLink.style.textDecoration = 'none';
             logoutLink.addEventListener('click', handleLogout);
 

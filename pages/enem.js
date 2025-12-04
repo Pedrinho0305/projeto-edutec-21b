@@ -40,16 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Cria elemento para exibir o email (ex: "Bem-vindo, nome")
             const emailSpan = document.createElement('span');
             // Exibe apenas a parte do nome antes do @ (para ficar mais limpo)
-            emailSpan.innerHTML = `<img src="../assets/material-symbols_person.svg" alt=""> <strong class = "nome-usuario">${userEmail.split('@')[0]}</strong>`;
-            emailSpan.style.marginRight = '10px';
-            emailSpan.style.color = '#388e3c'; 
+           emailSpan.innerHTML =`<div class="img-text"><img src="../assets/material-symbols_person.svg" alt=""> <strong class = "nome-usuario">${userEmail.split('@')[0]} |</strong></div>`;
             emailSpan.style.fontWeight = '500';
 
             // Cria o link de Sair/Logout
             const logoutLink = document.createElement('a');
             logoutLink.href = '#';
             logoutLink.textContent = 'Sair';
-            logoutLink.style.color = '#d32f2f'; 
+            
             logoutLink.style.textDecoration = 'none';
             logoutLink.addEventListener('click', handleLogout);
 

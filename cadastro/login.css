@@ -28,8 +28,9 @@ body{
     min-width: fit-content;
 }
 .active{
-    color:aqua;
+    color:#61AA88;
 }
+
 header{
     background: var(--background);
     padding-block: 1.5rem;

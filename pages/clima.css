@@ -198,13 +198,13 @@ section{
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 10rem;
+    margin-top: .5rem;
 
     h1{
     font-family: 'Dm Serif Display', sans-serif;
     text-transform: uppercase;
     color: var(--black);
-    font-size: 6rem;
+    font-size: 5rem;
     }
 }
 
@@ -459,7 +459,7 @@ section{
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
-    margin-top: 10rem;
+    margin-top: 5rem;
     justify-content: center;
     padding-top: 1rem;
     
@@ -507,7 +507,7 @@ section{
 
 .conscientizar{
     background: var(--white);
-    margin-top: 13.06rem;
+    margin-top: 10rem;
 
     img{
         width: 100%;
@@ -519,7 +519,7 @@ section{
     display: flex;
     justify-content: center;
     margin-bottom: 36.25rem;
-    margin-top: 9.56rem;
+    margin-top: 8rem;
 
     h2{
         width: 33.997rem;
@@ -546,6 +546,67 @@ section{
         text-align: justify;
     }
    }
+}
+
+.cards2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: .5rem;
+    justify-content: center;
+    padding-top: 1rem;
+    
+}
+
+.cards2 h1 {
+    font-family: 'Lora', sans-serif;
+}
+
+.cards2 p {
+    font-family: Lora;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: none;
+    width: 20rem;
+}
+
+.cards2 button {
+    background-color: var(--dark-green);
+}
+
+
+
+.cards2 div{
+    border-radius: .625rem;
+    background: var(--green);
+    border-style:solid;
+    border-color: var(--dark-green);
+    border-width: .3rem;
+    p{
+        text-align: justify;
+    }
+    
+
+    img{
+        width: 22rem;
+        height: 12.375rem;
+        flex-shrink: 0;
+        margin-top: 1.5rem;
+        border-radius: .7rem;
+    }
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+
+   
 }
 
 
